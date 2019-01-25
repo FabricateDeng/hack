@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>黑客帝国效果</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .error{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            font-size: 150px;
+            font-weight: bolder;
+            color: red;
+            transform: translate(-50%,-50%);
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div class="error">404</div>
+    <script>
+        // 获取canvas元素，并为该元素创建一个2d绘图环境
+        var canvas=document.getElementById("canvas");
+        var ctx=canvas.getContext("2d");
+
+        // 使canvas元素撑满整个页面
+        canvas.width=window.innerWidth;
+        canvas.height=window.innerHeight;
+
+        // 创建数字数组
+        var texts='0123456789'.split('');
+
+        // 计算一行应该有多少个数字
+        var fontSize=16;
+        var columns=canvas.width/fontSize;
+
+        // 创建drops数组,用于记录每一列当前拥有的数字数目，每项初始化为1
+        var drops=[];
+        for(var i=0;i<columns;i++){
+            drops[i]=1;
+        }
+
+        //定义绘制函数draw
+        function draw(){
+            //使得背景颜色为黑
+            ctx.fillStyle='rgba(0,0,0,0.05)';
+            ctx.fillRect(0,0,canvas.width,canvas.height);
+
+            // 随后背景颜色变透明，文字改为绿色
+            ctx.fillStyle= '#0f0';
+            ctx.font=fontSize+"px arial";
+
+            for(var i=0;i<drops.length;i++){
+                var text=texts[Math.floor(Math.random()*texts.length)];//从数字数组中随机取一个数字
+                ctx.fillText(text,i*fontSize,drops[i]*fontSize);//绘制文字
+                if(drops[i]*fontSize>canvas.height||Math.random()>0.95){
+                    drops[i]=0;
+                }
+                drops[i]++;
+            }
+
+        }
+        setInterval(draw,33);
+    </script>
+</body>
